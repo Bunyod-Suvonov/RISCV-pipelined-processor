@@ -49,7 +49,7 @@ module PipelinedProcessor(
   wire [3:0] ex_alu_ctrl;
 
   // MEM SIGNALS
-  wire [32:0] mem_pc_sum;
+  // wire [31:0] mem_pc_sum;
   wire mem_pc_src;
 
   wire mem_mem_to_reg, mem_reg_write, mem_mem_read, mem_mem_write, mem_branch, mem_zero;
@@ -58,6 +58,7 @@ module PipelinedProcessor(
 
   // WB SIGNALS
   wire wb_mem_to_reg, wb_reg_write;
+  wire [31:0] wb_write_data;
 
 
   PC pc_reg(
@@ -211,8 +212,8 @@ module PipelinedProcessor(
                 .mem_instruction(mem_instruction),
 
                 .wb_mem_to_reg(wb_mem_to_reg),
-                .wb_reg_write(wb_reg_write),
-                .wb_write_data(wb_write_data)
+                .wb_reg_write(wb_reg_write)
+                // .wb_write_data(wb_write_data)
               );
 
   Adder adder3(

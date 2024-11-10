@@ -2,7 +2,11 @@
 
 module DataMemory #
   (
-    parameter N = 32, parameter LSW = 3'b010, parameter LSH = 3'b001, parameter LSB = 3'b000, parameter LBU = 3'b100,
+    parameter N = 32,
+    parameter LSW = 3'b010,
+    parameter LSH = 3'b001,
+    parameter LSB = 3'b000,
+    parameter LBU = 3'b100,
     parameter reg_rows = 32'h00000010
   )(
     input                       we, re,
@@ -12,7 +16,7 @@ module DataMemory #
   );
   reg         [7:0]           data[reg_rows-1:0];
 
-  //Write to Data Memory
+  // Write to Data Memory
   always @ (*)
   begin
     if (we)
