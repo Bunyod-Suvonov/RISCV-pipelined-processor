@@ -90,6 +90,7 @@ module PipelinedProcessor(
              );
 
 
+  // TODO: jalr
   RegisterFile RF1 (
                  .clk(clk),
                  .rs1(id_instruction[19:15]),
