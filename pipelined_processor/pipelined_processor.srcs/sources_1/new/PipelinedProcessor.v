@@ -66,7 +66,7 @@ module PipelinedProcessor(
        .reset(reset),
        .pc_next((ex_pc_src)? if_pc_next : mem_pc_sum),
        .jump(ex_jump),
-       .jump_addr(ex_alu_result),
+       .jump_addr(mem_pc_sum),
        .pc(if_pc) // output
      );
 
