@@ -51,18 +51,23 @@ module PipelinedProcessor(
      
      wire mem_mem_to_reg, mem_reg_write, mem_mem_read, mem_mem_write, mem_branch, mem_zero;
      wire [31:0] mem_alu_result, mem_pc_sum, mem_rd2, mem_instruction;
+     wire [31:0] mem_read_data;
 
     
     
     // WB SIGNALS
     wire wb_mem_to_reg, wb_reg_write;
     
+    wire [31:0] wb_read_data;
+    wire [31:0] wb_alu_result;
+    wire [31:0] wb_instruction;
+    
     
     
     PC pc_reg(
         .clk(clk),
         .reset(reset),
-        .pc_next((ex_pc_src)? if_pc_next : mem_pc_sum),
+        .pc_next((mem_pc_src)? if_pc_next : mem_pc_sum),
         .pc(if_pc) // output
     );
     
@@ -73,7 +78,7 @@ module PipelinedProcessor(
     );
     
     InstructionMemory instr_mem(
-        .address(if_pc),
+        .PC(if_pc),
         .instruction(if_instruction)
     );
     
@@ -90,11 +95,11 @@ module PipelinedProcessor(
         .clk(clk),
         .rs1(id_instruction[19:15]),
         .rs2(id_instruction[24:20]),
-        .rd(id_instruction[11:7]),
+        .wb_reg_write(wb_reg_write),
         .rd1(id_rd1),
         .rd2(id_rd2),
         .wd(wb_write_data),
-        .we(wb_reg_write)
+        .we((wb_mem_to_reg) ? wb_read_data : wb_alu_result )
     );
     
     
@@ -195,7 +200,34 @@ module PipelinedProcessor(
         .mem_instruction(mem_instruction)
     );
     
+    // simply not and gate prolly, lets check later
     assign mem_pc_src = (mem_branch && mem_zero) ? 1'b1 : 1'b0;
+    
+    DataMemory data_memory(
+        .mem_alu_result(mem_alu_result),
+        .mem_rd2(mem_rd2),
+        .mem_mem_write(mem_mem_write),
+        .mem_mem_read(mem_mem_read),
+        .mem_read_data(mem_read_data)
+    );
+    
+    MEM_WB_PIPE mem_wb_pipe(
+        .mem_mem_to_reg(mem_mem_to_reg),
+        .mem_reg_write(mem_reg_write),
+        .mem_read_data(mem_read_data),
+        .mem_alu_result(mem_alu_result),
+        .mem_instruction(mem_instruction),
+        
+        .wb_mem_to_reg(wb_mem_to_reg),
+        .wb_reg_write(wb_reg_write),
+        .wb_read_data(wb_read_data),
+        .wb_alu_result(wb_alu_result),
+        .wb_instruction(wb_instruction)        
+    );
+    
+    
+    
+    
     
     
     

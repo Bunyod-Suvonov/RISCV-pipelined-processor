@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Adder(
-
-    );
+module Adder(first, second, out);
+    input [31:0] first, second;
+    output [31:0] out;
+    assign out=first+second;
 endmodule
