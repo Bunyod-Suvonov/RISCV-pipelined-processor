@@ -91,7 +91,7 @@ module PipelinedProcessor(
     );
     
     
-    Registerfile RF1 (
+    RegisterFile RF1 (
         .clk(clk),
         .rs1(id_instruction[19:15]),
         .rs2(id_instruction[24:20]),
@@ -104,7 +104,7 @@ module PipelinedProcessor(
     
     
     
-    Control ctrl(
+    ControlUnit ctrl(
         .opcode(id_instruction[6:0]),
         .branch(id_branch),
         .mem_read(id_mem_read),

@@ -1,4 +1,4 @@
-module InstMem(PC, instruction);
+module InstructionMemory(PC, instruction);
 input [31:0] PC;
 output [31:0] instruction;
 reg[31:0] memory[0:77];
